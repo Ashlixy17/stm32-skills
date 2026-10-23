@@ -1,191 +1,185 @@
-# stm32-skills
+<h1 align="center">stm32-skills</h1>
 
-面向通用 STM32 C 工程的 AI agent 技能，覆盖代码规范、固件开发、HAL/DMA 检查、调试取证、板级联调及按需使用的竞赛验证流程。不绑定具体芯片、开发板、应用或工具链。
+<p align="center">
+  <img alt="Platform" src="https://img.shields.io/badge/Platform-STM32-03234B?logo=stmicroelectronics&logoColor=white">
 
-除本 README 外，技能文件、元数据和安装脚本均使用英文。**实际生成或修改的固件代码仍默认逐项使用简体中文注释**，该规则已用英文写入技能；当前工程有更具体规则时采用工程规则。这些代码风格是维护者约定，不是 ST 官方标准。
+</p>
 
-采用通用的 `SKILL.md` 目录形式，供 Codex、Claude Code、DeepSeek Harness 以及其他支持该形式的 agent 使用。安装包不依赖某一家模型 API，也不包含编译器、烧录工具、调试服务器、自动风格检查器或上游脚本；实际开发沿用工程已有工具。
+<p align="center">
+  适用于 AI Agent 的通用 STM32 技能库
+  <br>
+  <strong>代码规范 · 固件开发 · 调试取证 · 竞赛实践</strong>
+</p>
 
-## 包含什么
+## 功能
 
-| 能力 | 内容 |
-|---|---|
-| 代码规范 | 命名、逐项注释、标志分组、完整花括号、禁用三元表达式、函数间两行空白 |
-| 生成代码边界 | CubeMX 只编辑已有成对 USER CODE 区；手写工程沿用原有组织方式；初始化单一归属 |
-| HAL 与 DMA | 处理实际状态、区分启动与完成、定义缓冲区所有权和一致发布、检查复用与溢出 |
-| 分层验证 | 分别报告源码检查、主机回放、目标构建及实物观测 |
-| 调试取证 | 对应源码/固件/符号/SVD，结合断点、观察点、寄存器和调用栈验证假设 |
-| 上电与联调 | 核对连接供电、接口时序、完整链路、观测信息及参数记录 |
-| 竞赛与交付 | 按需进行指标验收、重复测试、版本对应与独立复现 |
+- **代码规范**：统一命名、逐项注释、标志分组和排版，完整使用花括号，禁用三元表达式。
+- **固件开发**：遵守 CubeMX USER CODE 边界，保持单处初始化，检查 HAL 状态、IRQ 回调与 DMA 缓冲区交接。
+- **调试取证**：核对源码、ELF/AXF、运行固件与 SVD，结合断点、观察点、寄存器和调用栈定位问题。
+- **上电联调**：检查供电、接线、模块接口与完整数据链，记录标定和参数调整结果。
+- **竞赛验证**：按任务选择指标验收、重复测试、故障恢复与版本交付流程。
+- **分层验证**：区分源码检查、主机测试、目标构建和实物结果，保留结论对应的证据。
 
-技能不会把普通模块修改扩展成完整比赛流程，也不授予额外的烧录、复位、输出使能或 Git 操作权限。仅在用户明确授权（包括适用工程规则中的明确授权）时暂存和提交；推送等远端操作另需授权。
+支持 CubeMX 与手写工程，沿用已有 HAL/LL、构建系统和调试工具，不绑定具体芯片或开发板。技能文件使用英文，生成的固件代码默认采用简体中文注释；已有工程规范优先，详见 [代码规范](skills/stm32-skills/references/coding-style.md)。
 
-## 仓库结构
+## 快速上手
 
-```text
-stm32-skills/
-├── README.md
-├── .gitignore
-├── .gitattributes
-├── scripts/
-│   ├── install.ps1
-│   └── install.sh
-└── skills/
-    └── stm32-skills/
-        ├── SKILL.md
-        ├── agents/
-        │   └── openai.yaml
-        └── references/
-            ├── coding-style.md
-            ├── firmware-development.md
-            ├── reliability.md
-            ├── debugging.md
-            ├── bringup-and-integration.md
-            └── competition-validation.md
+需要 Node.js 22.20 或更高版本。在目标工程根目录执行对应命令：
+
+<details>
+<summary>Claude Code</summary>
+
+```bash
+npx skills@latest add Ashlixy17/stm32-skills --skill stm32-skills -a claude-code
 ```
 
-[SKILL.md](skills/stm32-skills/SKILL.md) 是唯一技能入口，参考文档按任务加载。`agents/openai.yaml` 是可选的 Codex 界面元数据，通用入口只使用 `name` 和 `description`，不要求其他 agent 读取该 YAML。
+安装后使用 `/stm32-skills` 调用。
 
-**安装单位是 `skills/stm32-skills/` 整个目录**，不是仓库根目录，也不是单独一个 `SKILL.md`。来源集中在本 README，不复制进技能运行包。
+</details>
 
-## 安装
+<details>
+<summary>Codex</summary>
 
-下载或克隆仓库后，在仓库根目录执行以下任一种方式。脚本只复制技能包，不连接网络、不更改 agent 配置、不执行 Git 操作；目标同名目录已存在时会拒绝覆盖。
+```bash
+npx skills@latest add Ashlixy17/stm32-skills --skill stm32-skills -a codex
+```
 
-### Windows / PowerShell
+安装后使用 `$stm32-skills` 调用。
+
+</details>
+
+<details>
+<summary>DeepSeek Harness</summary>
+
+```bash
+npx skills@latest add Ashlixy17/stm32-skills --skill stm32-skills -a universal
+```
+
+安装到工程的 `.agents/skills/` 共享目录，在请求中指定使用 `stm32-skills`。
+
+</details>
+
+<details>
+<summary>其他 Agent</summary>
+
+```bash
+npx skills@latest add Ashlixy17/stm32-skills --skill stm32-skills
+```
+
+按提示选择 Agent。
+
+</details>
+
+<details>
+<summary>本地安装</summary>
+
+下载或克隆仓库，在仓库根目录运行。将 `codex` 替换为 `claude-code` 或 `deepseek-harness` 可安装到对应 Agent 的目录。
 
 ```powershell
-# 安装到指定工程的 Codex 技能目录
 .\scripts\install.ps1 -Agent codex -ProjectRoot 'D:\Code project\your-project'
-
-# 安装到 Claude Code 的个人技能目录
-.\scripts\install.ps1 -Agent claude-code -Scope user
-
-# 安装到指定工程的 DeepSeek Harness 技能目录
-.\scripts\install.ps1 -Agent deepseek-harness -ProjectRoot 'D:\Code project\your-project'
-
-# 预览复制目标，不写入文件
-.\scripts\install.ps1 -Agent codex -Scope user -WhatIf
 ```
 
-脚本兼容 Windows PowerShell 5.1 的普通目录和 PowerShell 7；若技能根路径经过目录链接，建议使用 PowerShell 7。系统限制脚本执行时，可手动复制下方列出的技能目录，无需修改系统执行策略。
-
-### Linux / macOS / Git Bash
-
 ```bash
-# 安装到指定工程
 bash scripts/install.sh --agent codex --project-root '/path/to/your-project'
-
-# 安装到个人目录
-bash scripts/install.sh --agent claude-code --scope user
-bash scripts/install.sh --agent deepseek-harness --scope user
-
-# 预览
-bash scripts/install.sh --agent codex --scope user --dry-run
 ```
 
-默认 `Scope` / `--scope` 为 `project`，默认工程目录为调用命令时的当前目录。请显式传入工程路径，避免误装进技能仓库本身。PowerShell 的 `-SkillsRoot` 和 Bash 的 `--skills-root` 可指定其他 agent 的技能根目录；脚本会在其下面创建 `stm32-skills/`，并以该参数覆盖默认发现路径。
+个人安装使用 `-Scope user` 或 `--scope user`，预览使用 `-WhatIf` 或 `--dry-run`。手动安装时，完整复制 `skills/stm32-skills/` 到对应 Agent 的技能目录。
 
-### 默认发现路径与手动安装
+</details>
 
-| 安装目标 | 工程级 | 个人级 |
-|---|---|---|
-| Codex | `<project>/.agents/skills/stm32-skills/` | `~/.agents/skills/stm32-skills/` |
-| Claude Code | `<project>/.claude/skills/stm32-skills/` | `~/.claude/skills/stm32-skills/` |
-| DeepSeek Harness | `<project>/.dsh/skills/stm32-skills/` | `~/.dsh/skills/stm32-skills/` |
-| `universal` 共享位置 | `<project>/.agents/skills/stm32-skills/` | `~/.agents/skills/stm32-skills/` |
+## 为什么制作了这个技能库？
 
-`universal` 指共享目录约定，不代表每个 agent 都会自动扫描它。DeepSeek Harness 也读取 `.agents/skills`；设置 `DSH_HOME` 时，个人专用技能位于 `$DSH_HOME/skills`，本库脚本会采用该值。设置 `DSH_AGENTS_HOME` 后，其个人共享技能路径会变化，可用 `SkillsRoot` 显式指定。DeepSeek Harness 在工程中从最近的 `.git` 祖先目录发现技能；没有 Git 根目录时从当前工作目录发现。
+经过个人的电赛经历和CSDN上的 [三年电赛总结](https://blog.csdn.net/weixin_49821504/article/details/132242844) 意识到到：经验、投入和临时跑通，都不能代替对当前方案的验证。AI 能加快实现，也需要把选型依据、已知异常和实测结果交代清楚。
 
-手动安装时，将 `skills/stm32-skills/` 完整复制到表中的目标位置。安装后检查目标下直接存在 `SKILL.md` 和 `references/`，不要多套一层仓库目录。同一 agent 的多个发现位置应避免重复安装同名技能。更新已有安装时先保留本地改动，再由使用者明确替换；脚本没有强制覆盖选项。
+<details>
+<summary>#1：先确认方案能成立，再投入完整实现</summary>
 
-重新启动或重新加载 agent 会话后确认技能已出现在列表中；不同宿主的刷新方式以对应官方文档为准。当前目录约定依据 [Codex](https://learn.chatgpt.com/docs/build-skills)、[Claude Code](https://code.claude.com/docs/en/skills) 和 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/skills.md) 的官方说明整理。
+问题：器件熟悉、例程能运行，还不足以证明它满足这次任务的性能、接口和环境要求。等完整代码写完才发现关键能力不够，留给调整的时间已经很少。
 
-### 发布到 GitHub 后使用 Skills CLI
+做法：[竞赛验证](skills/stm32-skills/references/competition-validation.md) 要求先核对实际需求，把未证实的关键能力单独验证。AI 提出的选型和参数应说明依据，保留待实测项。
 
-对于支持的宿主，也可以使用 [Vercel Skills CLI](https://github.com/vercel-labs/skills) 安装。以下 `OWNER/REPOSITORY` 是占位符，需替换成发布后的真实仓库地址；该方式需要网络及 CLI 当前要求的 Node.js 环境。
+</details>
 
-```bash
-npx skills add OWNER/REPOSITORY --skill stm32-skills -a codex -a claude-code
+<details>
+<summary>#2：已经出现的异常，需要查到原因</summary>
 
-# 个人级安装追加 -g
-npx skills add OWNER/REPOSITORY --skill stm32-skills -a codex -g
+问题：换个位置、调整阈值或增加延时之后，现象可能暂时消失，但原来的触发条件仍可能在现场重现。
 
-# 在本仓库中只查看可发现的技能
-npx skills add . --list
-```
+做法：[调试取证](skills/stm32-skills/references/debugging.md) 要求保留触发条件，用原始数据、寄存器和调用链验证原因。临时绕过要记录限制，修复后按原条件复测。
 
-不假设该 CLI 已支持 DeepSeek Harness 专用 agent 参数；DeepSeek Harness 使用本库安装脚本或手动复制即可。其他宿主的发现目录和显式调用语法需要查其自身文档。
+</details>
 
-## 使用示例
+<details>
+<summary>#3：跑通之后，还要检查它依赖什么条件</summary>
 
-Codex 可明确写 `$stm32-skills`；Claude Code 可使用 `/stm32-skills`；DeepSeek Harness 可在请求中指明使用 `stm32-skills`，由宿主的技能发现和调用机制加载。安装技能不会改变模型本身的工具能力。
+问题：实验室里的一次成功，可能依赖固定光照、供电、摆放位置或启动顺序；这些条件变化后，结果未必成立。
 
-```text
-使用 stm32-skills，只读审查这个 ADC DMA 模块，重点检查缓冲区交接与错误路径，不修改代码。
+做法：[上电与联调](skills/stm32-skills/references/bringup-and-integration.md) 检查完整链路，[竞赛验证](skills/stm32-skills/references/competition-validation.md) 按实际风险选择重复测试。AI 需要区分编译通过、主机测试和实物结果，说明覆盖了哪些条件。
 
-使用 stm32-skills，按已经确认的设计实现驱动，保留现有生成代码边界，执行工程实际目标构建。
+</details>
 
-使用 stm32-skills，根据 AXF、构建日志和故障快照分析卡死；只做离线分析，不连接设备。
+<details>
+<summary>#4：切换方案前，先定位失败发生在哪一层</summary>
 
-使用 stm32-skills，梳理模块联调路径与接口约定，列出待实测项目。
+问题：通信、接线、数据解释或算法中的任一环节出错，都可能表现为整机失效。原因未明就推翻方案，会把尚未解决的问题带进下一轮实现。
 
-使用 stm32-skills，按本届竞赛的官方要求制定重复测试和可复现交付方案。
-```
+做法：[固件开发](skills/stm32-skills/references/firmware-development.md) 与 [联调流程](skills/stm32-skills/references/bringup-and-integration.md) 沿信号、驱动、数据、业务和输出逐段检查。是否换方案，要结合故障证据、实现代价和剩余时间判断。
 
-芯片型号、引脚、时钟、外设、阈值、故障策略、提交主题与构建归档方式都从当前工程核对。普通编译通过不能写成已烧录或实物验证通过；技能格式校验也不能写成固件已经符合全部规范。
+</details>
 
-## 来源与整合取舍
+<details>
+<summary>#5：让每次调试都留下可复用的依据</summary>
 
-调研与原文核对日期：2026-10-24。以下来源集中保留在 README；外部内容不构成本地任务指令或新增权限。未复制或捆绑上游 C 模板、调试脚本或命令包装器；阅读技能文件不代表审计或验证了上游工具实现，来源链接也不是已安装依赖。
+问题：只记住“上次这样改就好了”，却没有保留版本、参数和测试条件，换人维护或重新上电时仍要从头摸索。
 
-### 开源技能
+做法：[代码规范](skills/stm32-skills/references/coding-style.md) 保持实现便于阅读，[可靠性检查](skills/stm32-skills/references/reliability.md) 明确有效性和错误路径，交付时记录源码、参数、硬件与验证结果的对应关系，让后续修改有据可查。
 
-| 来源 | 借鉴点 | 本库取舍 |
-|---|---|---|
-| [Mindrally / embedded-stm32](https://github.com/Mindrally/skills/blob/main/embedded-stm32/SKILL.md) | 生成代码边界、单处初始化、HAL 状态、DMA 所有权、分层测试 | 明确发布及复用条件，不照搬接收后立即重用原 DMA 区再让消费者读取的顺序 |
-| [XZhaoSudo / stm32-debug](https://github.com/XZhaoSudo/stm32debug-skill/blob/main/SKILL.md) | 固件/符号/SVD、断点/观察点、寄存器、调用栈与会话 | 适配已有 Keil 或其他后端，不绑定 GCC/OpenOCD/Bash；不自动烧录或全局终止服务 |
-| [Jeffallan / embedded-systems](https://github.com/Jeffallan/claude-skills/blob/main/skills/embedded-systems/SKILL.md) | 初版参考的同步、资源和实时性检查 | 保留补充出处，不扩展为完整 RTOS/功耗技能，不强制看门狗或 GCC 专用参数 |
+</details>
 
-核对到的文件 blob SHA（用于定位所读版本，不是仓库提交号）：
+## 文件说明
 
-| 来源 | Blob SHA |
-|---|---|
-| Mindrally | `ef94447b1b662fd5cfde51eb27ecd32bb5248f30` |
-| Jeffallan | `5c834815b2e2d8309304080db7ab4a09de644c85` |
-| XZhaoSudo | `c906c78372f169a185cdf274bde5a6619c4d985d` |
+### 技能入口
 
-上游“变量必须是非 static 全局变量”的做法没有采用：先查符号、优化、作用域和栈帧，保留封装。也不采用终止全部同名调试进程的策略，只管理当前任务拥有的会话。断点时序扰动、寄存器读副作用、观察点资源及访问路径限制均需在结论中说明。
+- [SKILL.md](skills/stm32-skills/SKILL.md)：定义适用任务、工作流程和编辑边界，按需加载参考文档。
+- [agents/openai.yaml](skills/stm32-skills/agents/openai.yaml)：配置 Codex 的技能显示名称、简介和默认提示词。
 
-### 中文社区参赛复盘
+### 参考文档
 
-以下材料于 2026-10-24 调研，提炼工程方法。参赛经历和结果为作者自述，未独立复现实验或核验成绩；部分论坛正文提取受限，采用可获得的原帖内容或检索摘录，不视为全文技术审计。文章年份和赛季按标题区分，不将调研日期当作比赛时间。
+- [coding-style.md](skills/stm32-skills/references/coding-style.md)：命名、注释、标志分组、控制语句和排版规范。
+- [firmware-development.md](skills/stm32-skills/references/firmware-development.md)：资源归属、单处初始化、HAL 状态、IRQ 回调和 DMA 缓冲区管理。
+- [reliability.md](skills/stm32-skills/references/reliability.md)：数据有效性、共享状态、时间回绕、数值边界和分层验证。
+- [debugging.md](skills/stm32-skills/references/debugging.md)：源码与映像对应、调试工具选择、故障现场保留和证据记录。
+- [bringup-and-integration.md](skills/stm32-skills/references/bringup-and-integration.md)：上电检查、模块接口、完整链路联调、参数与标定记录。
+- [competition-validation.md](skills/stm32-skills/references/competition-validation.md)：竞赛指标、重复测试、版本对应、验收与交付复现。
 
-| 来源 | 参考内容 | 本库采用方式 |
-|---|---|---|
-| [CSDN：三年电赛总结](https://blog.csdn.net/weixin_49821504/article/details/132242844) | 选型变化、环境差异与现场复现失败 | 尽早验证关键能力，覆盖相关输入和环境变化，不沿用具体器件方案 |
-| [CSDN：2020 电赛 E 题复盘](https://blog.csdn.net/qq_45923860/article/details/117828157) | 联调中的器件与信号连接异常 | 将供电、接线和原始信号纳入排查，不将全部异常归因于算法 |
-| [RoboMaster：鸿烈战队经验](https://bbs.robomaster.com/article/8788) | 子系统交付顺序影响联调时间 | 尽早验证完整链路，明确依赖和可演示交付，不采用其人员或资金安排 |
-| [电子发烧友：2013 全国电赛感受与讨论](https://bbs.elecfans.com/m/jishu_369871_1_1.html) | 队员对实际完成状态认识不一致 | 用可验证结果交接，不采信或评价对具体队员责任的归因 |
-| [RoboMaster：RobotPilots 传承分析](https://bbs.robomaster.com/article/1970326?source=11) | 整机可靠性、测试覆盖、版本与交接复现 | 按风险选择验收记录，不采用机构专用测试、内部指标、人数和管理制度 |
 
-上电联调与竞赛参考据此重新编写，没有复制原帖模板、代码、图表或测试数据。具体赛事要求仍应核对官方现行文件。
+## 参考来源
 
-### 技术与安装依据
+- [Mindrally / embedded-stm32](https://github.com/Mindrally/skills/blob/main/embedded-stm32/SKILL.md)：生成代码边界、单处初始化、HAL 错误处理、DMA 管理与分层测试。
+- [XZhaoSudo / stm32-debug](https://github.com/XZhaoSudo/stm32debug-skill/blob/main/SKILL.md)：固件符号、SVD、断点、观察点、寄存器与调用栈的调试方法。
+- [Jeffallan / embedded-systems](https://github.com/Jeffallan/claude-skills/blob/main/skills/embedded-systems/SKILL.md)：共享状态同步、资源与实时性检查。
 
-- [ST AN4031：DMA](https://www.st.com/resource/en/application_note/an4031-using-the-stm32f2-stm32f4-and-stm32f7-series-dma-controller-stmicroelectronics.pdf)：涉及该文档所列系列的 DMA 访问路径和内存约束；其他器件查对应参考手册和勘误，该引用不限定本技能的芯片范围。
-- [Arm CMSIS：Core Register Access](https://arm-software.github.io/CMSIS_5/Core/html/group__Core__Register__gr.html)：PRIMASK 等访问接口；调用以实际 CMSIS 版本与上下文为准。
-- [GDB：Watchpoints](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Set-Watchpoints.html)：观察点类型、表达式、作用域和资源限制。
-- [GDB：Optimized Code](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Optimized-Code.html)：优化对变量可见性与源码映射的影响。
-- [OpenAI：Build skills](https://learn.chatgpt.com/docs/build-skills)：技能结构、发现目录与调用方式。
-- [Claude Code：Skills](https://code.claude.com/docs/en/skills)：`.claude/skills` 目录和技能调用。
-- [DeepSeek Harness：Skills](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/skills.md)：`.dsh/skills`、共享目录及环境变量。核对的文档 blob SHA：`3bfdbff4027b6de106b156fde526f35b62033525`。
-- [Vercel Skills CLI](https://github.com/vercel-labs/skills)：`skills/<name>/SKILL.md` 仓库发现与安装方式。宿主支持情况以该项目当前文档为准。
+<details>
+<summary>来自社区参赛经验</summary>
 
-命名、逐项中文注释、标志分组、两空行与禁用三元表达式来自维护者约定，完整收录于 [coding-style.md](skills/stm32-skills/references/coding-style.md)，无需依赖个人工程文档。超时、新鲜度、所有权、回绕、单位和故障路径检查仅要求按已确认设计处理，不授权架构、库版本或设备策略的额外变更。
+- [CSDN：三年电赛总结](https://blog.csdn.net/weixin_49821504/article/details/132242844)
+- [CSDN：2020 电赛 E 题复盘](https://blog.csdn.net/qq_45923860/article/details/117828157)
+- [RoboMaster：鸿烈战队经验](https://bbs.robomaster.com/article/8788)
+- [电子发烧友：2013 全国电赛感受与讨论](https://bbs.elecfans.com/m/jishu_369871_1_1.html)
+- [RoboMaster：RobotPilots 传承分析](https://bbs.robomaster.com/article/1970326?source=11)
 
-## 发布到 GitHub
+</details>
 
-建议仓库名 `stm32-skills`，将本目录作为仓库根目录，保留 `skills/stm32-skills/` 和 `scripts/` 的层级。不要把固件工程、编译产物、个人配置或调试缓存加入技能仓库。
+<details>
+<summary>技术文档与技能安装说明</summary>
 
-发布前由维护者核对上游许可、所需署名与所选发布许可证；本次没有代选许可证。创建远端、提交与推送均按用户指令执行。
+- [ST AN4031：DMA](https://www.st.com/resource/en/application_note/an4031-using-the-stm32f2-stm32f4-and-stm32f7-series-dma-controller-stmicroelectronics.pdf)
+- [Arm CMSIS：Core Register Access](https://arm-software.github.io/CMSIS_5/Core/html/group__Core__Register__gr.html)
+- [GDB：Watchpoints](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Set-Watchpoints.html)
+- [GDB：Optimized Code](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Optimized-Code.html)
+- [OpenAI：Build skills](https://learn.chatgpt.com/docs/build-skills)
+- [Claude Code：Skills](https://code.claude.com/docs/en/skills)
+- [DeepSeek Harness：Skills](https://github.com/deepseek-ai/deepseek-harness/blob/master/docs/subsystems/skills.md)
+- [Vercel Skills CLI](https://github.com/vercel-labs/skills)
+
+</details>
