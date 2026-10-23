@@ -1,0 +1,33 @@
+# 系统与编辑器个人文件
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
+# 本地配置与凭据
+config.json
+.env
+.env.*
+
+# 缓存与临时产物
+__pycache__/
+*.py[cod]
+.venv/
+node_modules/
+*.log
+*.tmp
+*.bak
+*.zip
+
+# 固件编译与调试产物
+*.axf
+*.elf
+*.hex
+*.bin
+*.map
+*.o
+*.obj
+*.uvoptx
+*.uvguix.*
