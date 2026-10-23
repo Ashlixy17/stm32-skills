@@ -1,5 +1,6 @@
 <h1 align="center">stm32-skills</h1>
 
+
 <p align="center">
   <img alt="Platform" src="https://img.shields.io/badge/Platform-STM32-03234B?logo=stmicroelectronics&logoColor=white">
 
@@ -9,6 +10,9 @@
   适用于 AI Agent 的通用 STM32 技能库
   <br>
   <strong>代码规范 · 固件开发 · 调试取证 · 竞赛实践</strong>
+</p>
+<p align="center">
+  简体中文 | <a href="README.en.md">English</a>
 </p>
 
 ## 功能
