@@ -7,6 +7,7 @@ Use for initial power-up, connected modules, whole-system integration, or field 
 - Identify actual input, intervening modules, final output, and the acceptance observation. Establish a simple, testable complete path early, then improve performance.
 - Distinguish implemented modules, physically tested modules, and integrated system behavior. Mock input/interfaces validate only the corresponding software path.
 - Verify and reuse current resource/interface documentation. Fill affected gaps without duplicating documents or restructuring directories.
+- Before reusing a prepared module, identify its hardware/configuration, dependencies, interface/resource use, tested supply/load/timing range, and known limits; include a build/test entrypoint where software is involved. Mark missing evidence; a working example under other conditions does not establish suitability here.
 - For driver, IRQ, and DMA internals use [Firmware development](firmware-development.md); this reference concerns cooperation between modules.
 
 ## 2. Check connections and power
@@ -17,6 +18,8 @@ Use for initial power-up, connected modules, whole-system integration, or field 
 - Observe relevant rails, reset, and signals during load switching. Preserve failures rather than masking power or connection problems with parameter changes.
 - Check connector retention, pin order, and signal integrity. Check cable strain, pinching, abrasion, and looseness across motion only when moving mechanisms are present.
 - Without actual wiring or measurement evidence, mark the condition unconfirmed. Schematics and source inspection do not establish correct physical assembly.
+
+For instrument-based validation, establish the test point, reference, and actual load. Record relevant instrument/probe model, attenuation, coupling, input termination, bandwidth, sampling, and signal-source load settings. Select only settings that affect the measurement; use the actual equipment documentation and ratings. Check probe loading and grounding/isolation before connection. A signal source's amplitude setting or a firmware-displayed value alone does not establish the signal at the device input.
 
 ## 3. Agree on interface contracts
 
@@ -53,6 +56,7 @@ Check only relevant fields and reuse existing definitions; a protocol replacemen
 ## 6. Record tuning and calibration
 
 - Before tuning, verify direction, zero, units, actual period, and output range. Report raw quantities when calibration is unavailable instead of compensating with control parameters.
+- For control-performance problems, check achievable actuator speed, acceleration, resolution, deadband, saturation, and loaded response as relevant. Compare requested and executed commands, feedback, and sensing/communication delay before changing gains. Distinguish measured limits from hypotheses; do not silently change output limits, protection, or the control architecture to meet a target.
 - Record parameter name, units, old/new value, reason, conditions, results, and associated source/configuration. Change one test factor at a time when practical; explain necessary coupled changes.
 - Preserve a complete validated parameter set that can be restored. After restart, board replacement, or firmware changes, confirm which set actually loaded.
 - Persistence, storage, and write timing are design decisions. Recording parameters does not authorize Flash writes, a configuration protocol, or an online tuning feature.

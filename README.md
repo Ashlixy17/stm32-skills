@@ -151,10 +151,10 @@ bash scripts/install.sh --agent codex --project-root '/path/to/your-project'
 
 - [coding-style.md](skills/stm32-skills/references/coding-style.md)：命名、注释、标志分组、控制语句和排版规范。
 - [firmware-development.md](skills/stm32-skills/references/firmware-development.md)：资源归属、单处初始化、HAL 状态、IRQ 回调和 DMA 缓冲区管理。
-- [reliability.md](skills/stm32-skills/references/reliability.md)：数据有效性、共享状态、时间回绕、数值边界和分层验证。
+- [reliability.md](skills/stm32-skills/references/reliability.md)：数据有效性、共享状态、时间回绕、数值边界、峰值资源与时序预算和分层验证。
 - [debugging.md](skills/stm32-skills/references/debugging.md)：源码与映像对应、调试工具选择、故障现场保留和证据记录。
-- [bringup-and-integration.md](skills/stm32-skills/references/bringup-and-integration.md)：上电检查、模块接口、完整链路联调、参数与标定记录。
-- [competition-validation.md](skills/stm32-skills/references/competition-validation.md)：竞赛指标、重复测试、版本对应、验收与交付复现。
+- [bringup-and-integration.md](skills/stm32-skills/references/bringup-and-integration.md)：上电检查、模块适用范围、测量条件、完整链路联调、执行器响应与标定记录。
+- [competition-validation.md](skills/stm32-skills/references/competition-validation.md)：竞赛指标、独立验收样本、范围与重复测试、现场操作演练、版本对应与交付复现。
 
 
 ## 参考来源
@@ -166,11 +166,21 @@ bash scripts/install.sh --agent codex --project-root '/path/to/your-project'
 <details>
 <summary>来自社区参赛经验</summary>
 
+以下复盘用于提炼开发与验证流程；帖子中的参数、技术归因和比赛要求仍需结合当前器件文档、实测和当届规则核对。
+
 - [CSDN：三年电赛总结](https://blog.csdn.net/weixin_49821504/article/details/132242844)
 - [CSDN：2020 电赛 E 题复盘](https://blog.csdn.net/qq_45923860/article/details/117828157)
 - [RoboMaster：鸿烈战队经验](https://bbs.robomaster.com/article/8788)
 - [电子发烧友：2013 全国电赛感受与讨论](https://bbs.elecfans.com/m/jishu_369871_1_1.html)
 - [RoboMaster：RobotPilots 传承分析](https://bbs.robomaster.com/article/1970326?source=11)
+- [EEWORLD：2025 电赛参赛总结](https://bbs.eeworld.com.cn/thread-1323525-1-1.html)：固定元件组合的测试覆盖不足、功能扩展时的内存限制与现场接线问题。
+- [21ic：2011 全国大学生电子设计竞赛经验总结](https://www.21ic.com/chongdian/zhenxin/2017-06-13/724273.html)：少数频点测试的局限与测量仪器操作。
+- [博客园：2023 年电赛 E 题完整设计暨电赛全记录](https://www.cnblogs.com/switch-swq/p/18704875)：通信时序、自启动、重复执行与临近交付的改动。
+- [博客园：2022 年 10 月电赛经验总结](https://www.cnblogs.com/sosoeeee/p/16820505.html)：模块验收与完整依赖、参数的版本保存。
+- [Fun_Cheong：关于我的电赛是怎么寄掉的](https://funcheong.cn/index.php/archives/27/)：偶发启动异常、重启后恢复与尚未确认的根因。
+- [HongLiu：2025 电赛 A 题复盘](https://hongliu.icu/2025/08/Diansai_25/)：准备模块的验证范围、供电范围与整机组合问题。
+- [素颜：25 年电赛总结](https://suyanblog.cn/25_elc/index.html)：控制性能与底层驱动能力的反思，驱动归因仍属作者推测。
+- [CSDN：2025 年 C 题电赛总结](https://aiot.csdn.net/69df604354b52172bc6a10a3.html)：现场测量操作、装配与运输后的接线检查。
 
 </details>
 

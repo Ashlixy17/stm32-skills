@@ -24,6 +24,19 @@ Inspect only affected paths. These checks do not authorize adding an RTOS, watch
 - Calculate timer clocks and sample periods from the current clock tree, prescalers, and triggers. Do not assume timer clocks are always twice the bus clock. Recheck control and communication timing after changes.
 - Evaluate floating point, heap allocation, stack arrays, and logging against the actual FPU, build options, RAM, and timing budget. Do not silently change the floating-point ABI, memory layout, or heap strategy during a small edit.
 
+## Peak resources and complete-path timing
+
+For changes that materially increase workload, buffering, or concurrent functions, establish a budget before full implementation and verify it during integration. Reuse existing map files, build reports, and runtime observations; a small unrelated edit does not require a system-wide budget.
+
+| Budget | Account for |
+|---|---|
+| Memory | Flash, static RAM including static buffers, peak stack/interrupt nesting, dynamic buffers/heap, and allocation failures where applicable |
+| Processing | Acquisition, decoding, algorithms, control, display/logging, and competing IRQ/task work under the relevant peak workload |
+| Communication and data age | Actual frame sizes/rates, transfer and queue delays, bursts, and slow-consumer behavior along the complete path |
+
+- State capacity, estimated or observed peak use, remaining margin, and evidence gaps for affected resources. Choose margins from task needs; do not impose a universal utilization percentage or sampling/control period.
+- A linker fit does not establish runtime stack/heap headroom. Average execution time or nominal link rate does not establish worst observed latency, deadline compliance, or end-to-end response. Label estimates, measurements, and untested peak conditions separately.
+
 ## Select validation by impact
 
 | Change | Relevant validation |

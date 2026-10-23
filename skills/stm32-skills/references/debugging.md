@@ -39,6 +39,8 @@ Record symptoms, trigger conditions, frequency, expected behavior, and recent re
 
 Follow symptom -> hypothesis -> observation -> result -> conclusion. A temporary delay, parameter change, or extra retry is not a proven root-cause fix.
 
+For intermittent faults, preserve the last known inputs, readiness/validity state, startup order, and relevant supply/load conditions using available evidence. Choose observations that distinguish software timing/state faults from connection, supply, or measurement faults; a plausible cause is still a hypothesis. A restart that restores operation does not establish a fix.
+
 ## 5. Combine observations with their limitations
 
 | Tool | Useful question | Limitations |
@@ -65,6 +67,7 @@ Follow symptom -> hypothesis -> observation -> result -> conclusion. A temporary
 ## 7. Recheck and close the investigation
 
 - Compare before/after under the same trigger conditions. Remove only temporary breakpoints/watchpoints and unneeded sessions owned by this task. Do not take over or close the user's other sessions.
+- In the result, distinguish cause confirmed with retest, temporary workaround, and unresolved/not reproduced. Record the trigger, impact, workaround limits, retest coverage, and next useful observation for open issues. Keep their effect on acceptance visible even if subsequent runs pass; this record does not authorize adding a persistent fault system or changing recovery policy.
 - Preserve existing logs/snapshots. Record only necessary evidence and exclude credentials, unrelated memory dumps, and personal machine paths from public reports.
 - Use this compact evidence record in the task result when helpful; a new file is not mandatory:
 
@@ -74,7 +77,7 @@ Follow symptom -> hypothesis -> observation -> result -> conclusion. A temporary
 | Version and target | Source revision/changes, configuration, image/running-version correspondence |
 | Tools and operations | Probe/backend, attach/reset/load behavior, halted versus continuous observation |
 | Hypothesis and observations | Actual breakpoint, variable, register, and stack results with capture timing |
-| Findings and limits | Proven, excluded, unresolved items; timing disturbance |
+| Findings and limits | Proven, excluded, unresolved items; timing disturbance; issue status and workaround limits |
 | Change and retest | Actual diff, same-condition results, build and physical validation scope |
 
 If only offline analysis was completed or the fault was not reproduced, say so rather than declaring it solved.

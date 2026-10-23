@@ -150,10 +150,10 @@ Approach: [Coding style](skills/stm32-skills/references/coding-style.md) keeps i
 
 - [coding-style.md](skills/stm32-skills/references/coding-style.md): Naming, comments, flag grouping, control flow, and formatting.
 - [firmware-development.md](skills/stm32-skills/references/firmware-development.md): Resource ownership, initialization, HAL status, IRQ callbacks, and DMA buffers.
-- [reliability.md](skills/stm32-skills/references/reliability.md): Data validity, shared state, tick wraparound, numeric boundaries, and layered validation.
+- [reliability.md](skills/stm32-skills/references/reliability.md): Data validity, shared state, tick wraparound, numeric boundaries, peak resource and timing budgets, and layered validation.
 - [debugging.md](skills/stm32-skills/references/debugging.md): Source/image correspondence, tool selection, fault preservation, and evidence records.
-- [bringup-and-integration.md](skills/stm32-skills/references/bringup-and-integration.md): Power-up checks, module interfaces, complete-path integration, parameters, and calibration.
-- [competition-validation.md](skills/stm32-skills/references/competition-validation.md): Competition criteria, repeated tests, version correspondence, acceptance, and reproducible delivery.
+- [bringup-and-integration.md](skills/stm32-skills/references/bringup-and-integration.md): Power-up checks, module operating ranges, measurement conditions, complete-path integration, actuator response, and calibration.
+- [competition-validation.md](skills/stm32-skills/references/competition-validation.md): Competition criteria, independent acceptance samples, range coverage, repeated tests, field-operation rehearsals, version correspondence, and reproducible delivery.
 
 ## Sources
 
@@ -164,11 +164,21 @@ Approach: [Coding style](skills/stm32-skills/references/coding-style.md) keeps i
 <details>
 <summary>Community competition experience</summary>
 
+These retrospectives inform development and validation practices. Check their parameters, technical explanations, and competition requirements against current device documentation, measurements, and the applicable event rules.
+
 - [CSDN: Three-year electronics competition retrospective](https://blog.csdn.net/weixin_49821504/article/details/132242844)
 - [CSDN: 2020 competition, Problem E retrospective](https://blog.csdn.net/qq_45923860/article/details/117828157)
 - [RoboMaster: Honglie team experience](https://bbs.robomaster.com/article/8788)
 - [Elecfans: 2013 national electronics competition reflections and discussion](https://bbs.elecfans.com/m/jishu_369871_1_1.html)
 - [RoboMaster: RobotPilots knowledge transfer analysis](https://bbs.robomaster.com/article/1970326?source=11)
+- [EEWORLD: 2025 electronics competition retrospective](https://bbs.eeworld.com.cn/thread-1323525-1-1.html): Limited coverage with fixed component combinations, memory limits during feature expansion, and field wiring problems.
+- [21ic: 2011 national electronics competition retrospective](https://www.21ic.com/chongdian/zhenxin/2017-06-13/724273.html): Limits of testing only a few frequency points and operating measurement instruments.
+- [Cnblogs: 2023 competition, Problem E design and retrospective](https://www.cnblogs.com/switch-swq/p/18704875): Communication timing, autostart, repeated operation, and changes near delivery.
+- [Cnblogs: October 2022 competition retrospective](https://www.cnblogs.com/sosoeeee/p/16820505.html): Module acceptance and preserving complete dependencies and parameters.
+- [Fun_Cheong: How my competition entry failed](https://funcheong.cn/index.php/archives/27/): Intermittent startup failures, recovery after restart, and an unconfirmed root cause.
+- [HongLiu: 2025 competition, Problem A retrospective](https://hongliu.icu/2025/08/Diansai_25/): Prepared modules' tested operating ranges, supply limits, and integration problems.
+- [Suyan: 2025 competition retrospective](https://suyanblog.cn/25_elc/index.html): Reflections on control performance and low-level drive capability; the drive explanation remains the author's hypothesis.
+- [CSDN: 2025 competition, Problem C retrospective](https://aiot.csdn.net/69df604354b52172bc6a10a3.html): Field measurement procedures, assembly, and connection checks after transport.
 
 </details>
 

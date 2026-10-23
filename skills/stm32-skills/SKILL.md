@@ -21,7 +21,7 @@ Deliver changes that follow the current project's rules, can be verified with it
 |---|---|
 | Add or modify C/H files, or review code style | [Coding style](references/coding-style.md) |
 | Drivers, initialization, HAL, IRQ, DMA, or sampling interfaces | [Firmware development](references/firmware-development.md) |
-| Scheduling, control, recovery, or validation | [Reliability and validation](references/reliability.md) |
+| Scheduling, control, recovery, resource budgets, or validation | [Reliability and validation](references/reliability.md) |
 | Hangs, faults, peripheral failures, incorrect values, or timing investigations | [Debugging with evidence](references/debugging.md) |
 | Initial power-up, module connections, system integration, or field tuning | [Bring-up and integration](references/bringup-and-integration.md) |
 | Requested competition preparation, system acceptance, or reproducible delivery | [Competition validation and delivery](references/competition-validation.md) |
