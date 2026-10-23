@@ -1,4 +1,0 @@
-interface:
-  display_name: "STM32 固件开发与调试"
-  short_description: "按代码规范开发 STM32，核对 HAL 与 DMA，并结合符号和寄存器定位故障"
-  default_prompt: "使用 $stm32-firmware 按当前工程规则开发或排查 STM32 固件，先核对任务授权、目标配置与验证证据。"

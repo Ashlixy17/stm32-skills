@@ -1,0 +1,4 @@
+interface:
+  display_name: "STM32 Skills"
+  short_description: "Develop and debug STM32 firmware with evidence"
+  default_prompt: "Use $stm32-skills to develop or diagnose STM32 firmware under the current project rules, checking task authorization, target configuration, and validation evidence."
