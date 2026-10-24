@@ -1,6 +1,6 @@
 # Bring-up and Integration
 
-Use for initial power-up, connected modules, whole-system integration, or field tuning. For source-only reviews, list pending hardware checks rather than claiming power-up inspection. Connections, power, outputs, and tests remain subject to task authorization. No chip, board, wiring, or default parameter is prescribed here.
+Use for PCB interconnect selection/assembly review, initial power-up, connected modules, whole-system integration, or field tuning. For source-only reviews, list pending hardware checks rather than claiming power-up inspection. Connections, power, outputs, and tests remain subject to task authorization. No chip, board, wiring, or default parameter is prescribed here.
 
 ## 1. Define the path to validate
 
@@ -11,6 +11,14 @@ Use for initial power-up, connected modules, whole-system integration, or field 
 - For driver, IRQ, and DMA internals use [Firmware development](firmware-development.md); this reference concerns cooperation between modules.
 
 ## 2. Check connections and power
+
+### FPC selection and assembly
+
+This is the skill author's strong design recommendation and assembly requirement, not a claim that every FPC design is unsuitable.
+
+- Avoid FPC ribbon-cable interconnects where practical. Before selecting them, assess alternatives against the actual connector pitch, assembly capability, retention, motion/strain, and maintenance needs; do not choose FPC solely for compactness.
+- If FPC is selected, **include SMT assembly for its PCB-side connectors/terminations when placing the PCB fabrication order. Do not plan or instruct the user to hand-solder them.** Check that these parts and their assembly are included in the order before treating it as ready to submit.
+- Keep the board-side assembly requirement distinct from inserting a cable into an assembled connector. Missing SMT assembly remains an unresolved ordering item; do not silently substitute hand soldering.
 
 ### Mandatory two-pass wiring check
 
@@ -41,12 +49,13 @@ For instrument-based validation, establish the test point, reference, and actual
 
 ## 3. Agree on interface contracts
 
-Check only relevant fields and reuse existing definitions; a protocol replacement is not required.
+Check only relevant fields and reuse existing definitions; a protocol replacement is not required. Where mechanical, electrical, and firmware/control work meet, have the relevant owners agree on the same interface record rather than maintaining separate, inconsistent mappings.
 
 | Category | Facts to agree on |
 |---|---|
 | Data interpretation | Type, dimensions, units, range, scaling, invalid representation |
-| Order/direction | Channel order, positive direction, coordinate frame, zero, transformation owner |
+| Order/direction | Physical device/channel identity, channel order, positive direction, active polarity, coordinate frame, zero/limits, transformation owner |
+| Command/physical mapping | Command quantity/range, conversion and scaling, transmission or speed ratios where applicable, physical actuator, feedback source/quantity |
 | Timing | Acquisition/publication timestamp, period, allowed latency, expiry |
 | Communication | Framing, length, endianness, message ID, validation, boundary detection |
 | Handoff | Producer, consumer, buffer ownership, consistent publication |
@@ -56,8 +65,15 @@ Check only relevant fields and reuse existing definitions; a protocol replacemen
 - State the timebase. Confirm synchronization or conversion before comparing clocks from different devices/processors; do not directly subtract unrelated counters.
 - Use sequence numbers, checksums, and timeouts according to protocol needs. A valid checksum proves neither freshness nor a correct sender state.
 - When changing units, frame layout, or state semantics, check both endpoints; local compilation is insufficient.
+- For affected output paths, trace command -> conversion -> physical channel/mechanism -> observed response. Compare expected and measured direction, quantity, range, and feedback under the relevant conditions/load. A setpoint display or communication acknowledgement does not establish the delivered motion/output. Record the image/configuration, conditions, expected versus observed response, and any unmeasured facts; do not absorb an unverified mapping into tuning gains.
+- If device numbering, direction, scaling, ratios, limits, or feedback mapping changes, identify which earlier calibration, tuning, and performance results depended on it. Preserve those records with their original conditions, mark the affected conclusions as pending revalidation, and repeat the relevant checks before reusing them for the changed configuration. Unaffected evidence remains applicable within its recorded scope.
 
-## 4. Inspect stages, then the complete path
+## 4. Integrate incrementally, then validate the complete path
+
+- Establish an identifiable minimal working end-to-end combination and its validation layer. Integrate small functional changes when practical; when changes must be coupled, record the dependency so a regression can still be narrowed down.
+- After each module addition or integration/merge, inspect affected shared resources: pins/alternate functions, clocks, timer channels, IRQ priorities/callbacks, DMA, buffer ownership, and processing time. Recheck existing dependent behavior such as display, input handling, outputs, startup, and error paths alongside the new function. Select checks by impact; a small module change does not require unrelated whole-system testing.
+- Record the integrated source/configuration/parameter combination, changed resources, results, and last passing combination. Use source checks, host tests, and target builds where applicable; mark physical regression pending when hardware or authorization is unavailable. A successful merge/build does not establish that modules coexist on the device. Keeping this record does not require a new Git operation.
+- If integration regresses behavior, preserve the failing case and observations, compare with the last passing combination, and narrow the changed modules/resources before altering unrelated code. Keep the user's work intact. After a fix, retest the original trigger and affected existing behavior.
 
 - Narrow the fault through physical signal/connection -> driver/transport -> decoding -> business calculation -> output, adapting the order to existing evidence.
 - Compare raw and processed values at boundaries: changing input, complete messages, correct units, valid state, and actual output execution.
@@ -80,4 +96,19 @@ Check only relevant fields and reuse existing definitions; a protocol replacemen
 - Persistence, storage, and write timing are design decisions. Recording parameters does not authorize Flash writes, a configuration protocol, or an online tuning feature.
 - Label untested parameters as candidates or pending validation, not "optimal" or universally applicable.
 
+## 7. Reproduce installation and operating setup
+
+Use when installation, a venue move, demonstrations, or field operation affects the task. Reuse the project's operating instructions and record only relevant setup dependencies.
+
+- Make the operating sequence reproducible: actual mounting/placement, intended cables/accessories/load, host/network/adapter configuration where required, power/startup order, focus/calibration where applicable, readiness observations, task start, and shutdown/recovery. Describe permitted manual actions and expected states so another operator can follow the sequence.
+- Rehearse the complete task in the intended installed configuration. Where relevant, check mounting geometry, field of view/focus, lighting, and cable clearance across the required motion range. Use measurements and permitted operating conditions; a pass with a different placement or a manually bypassed step does not establish the delivered setup.
+- After transport, reassembly, component replacement, or relevant installation/environment changes, repeat affected checks before relying on earlier results. Apply the mandatory wiring recheck when its conditions are met, and confirm any setup-dependent calibration against the actual assembly.
+- Validate each main/spare unit intended for substitution against its required role and operating range; another unit of the same model or batch passing is insufficient. Record unit identity, relevant configuration and installation, test conditions, results, and unresolved limitations so replacement does not silently inherit unrelated evidence.
+
 For requested repeatable system acceptance or delivery, continue with [Competition validation and delivery](competition-validation.md). Ordinary integration does not trigger a full competition workflow.
+
+## Experience sources
+
+- [Blue Bridge Cup integration retrospective](https://developer.cloud.tencent.com/article/1477916) and [RoboMaster regional retrospective](https://blog.luonto.me/zh/posts/robomaster-26-regional/): module coexistence and regression after integrating changes. The reported symptoms do not establish a universal root cause or Git workflow.
+- [RM2025 South China Tiger hero mechanical report](https://bbs-web-static.robomaster.com/07f510bc303a4da0a58713c1a29575771756092800041/RM2025-%E5%8D%8E%E5%8D%97%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6-%E5%8D%8E%E5%8D%97%E8%99%8E-%E8%8B%B1%E9%9B%84%E6%9C%BA%E6%A2%B0%E7%BB%93%E6%9E%84%E8%AE%BE%E8%AE%A1%E6%8A%A5%E5%91%8A.pdf) and [TI-Cup2025-E task/control analysis](https://github.com/Thybing/TI-Cup2025-E/blob/main/doc/README.md): physical interface mapping and command-unit conversions. Example ratios, parameters, and hardware choices are not project defaults.
+- [2023 electronics competition retrospective](https://www.dyldr.top/life/nuedc2023), [gimbal competition retrospective](https://cuifrost.cn/blog/nuedc-laser-target/), and [CIMC experience](https://www.cnblogs.com/tatazml/p/16099286.html): installation, individual component checks, cable motion, and host/network setup as part of delivery. These accounts do not establish a universal electrical diagnosis or software environment.

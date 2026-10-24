@@ -28,7 +28,7 @@ Apply these defaults to new or actually modified handwritten business code. More
 
 ## Per-item comments and flag grouping
 
-The default language for comments in generated or edited project firmware is **Simplified Chinese**, unless the current project explicitly chooses another language. This instruction package is written in English for agent portability; that does not change the firmware comment policy.
+Write comments in generated or edited project firmware in the **language chosen by the user**. A current explicit user choice overrides older project conventions. When the user has not specified a language, follow the project's existing comment-language convention. The language of this instruction package does not determine the firmware comment language.
 
 - Give every new or modified business variable declaration/definition and macro an individual purpose comment in the required firmware language. This includes module/global/local variables, constant objects, arrays, pointers, structure fields, function parameters, and header guards.
 - Declare one variable per declaration. Use a trailing `//` comment for ordinary declarations and macros. Split parameters across lines with individual `/* ... */` comments when needed. Keep multiline macro continuations valid; use a function when clearer.
@@ -40,7 +40,7 @@ The default language for comments in generated or edited project firmware is **S
 
 ## Layout example
 
-The comments below are English translations solely to keep this package English. When writing actual project firmware, use the comment language specified above. The sample shows layout, not a complete interrupt-safe publication protocol or real hardware parameters.
+The example uses English comments for illustration. When writing actual project firmware, use the comment language selected above. The sample shows layout, not a complete interrupt-safe publication protocol or real hardware parameters.
 
 ```c
 #include <stdint.h>

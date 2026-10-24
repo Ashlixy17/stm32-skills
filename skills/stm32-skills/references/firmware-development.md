@@ -55,4 +55,8 @@ For each affected DMA path, establish:
 
 Select source, host, target-build, and hardware checks from [Reliability and validation](reliability.md). For runtime failures, use [Debugging with evidence](debugging.md) to locate the break in initialization/start/IRQ/callback/publication instead of guessing delays or timeouts.
 
+When adding modules or integrating changes, follow [Incremental integration and regression](bringup-and-integration.md#4-integrate-incrementally-then-validate-the-complete-path): review affected shared resources and recheck dependent existing functions as well as the new path. Record the last passing combination and the actual validation layer.
+
+For compiler selection, Keil/Arm builds, compile/link failures, image conversion, or authorized programming, use [Build, programming, and troubleshooting](build-and-programming.md). Keep the current build system and device configuration unless a migration is explicitly part of the task.
+
 For first power-up, multiple connected modules, or field tuning, also read [Bring-up and integration](bringup-and-integration.md). A single-driver edit does not automatically require whole-system delivery.

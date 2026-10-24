@@ -23,12 +23,24 @@ Use for fault analysis, runtime inspection, and authorized hardware debugging. W
 
 When running-image correspondence is unproven, state that limitation before interpreting source lines. Missing debug information limits variables, line mapping, and backtraces but does not necessarily prevent register inspection.
 
+### SVD sources
+
+When this skill or the current project does not include an SVD for the target chip, check these sources:
+
+- The CMSIS directories shipped with the matching STM32Cube device package, when provided. Package contents vary; also check the matching installed CMSIS device-family pack (DFP) for its SVD.
+- The corresponding series' STM32Cube download page on the [ST website](https://www.st.com/en/embedded-software/stm32cube-mcu-mpu-packages/products.html).
+- The [CMSIS-SVD community mirror: STMicro data](https://github.com/cmsis-svd/cmsis-svd-data/tree/main/data/STMicro). This is the current data location replacing the former `posborne/cmsis-svd` data path.
+
+Before use, confirm the exact supported chip/variant and record the file's source, package version or repository revision, and device-description version when available. Do not substitute a similarly named chip's SVD without verifying compatibility. Check register definitions against the target reference manual and errata; obtaining or parsing an SVD does not establish that repeated register reads are harmless.
+
 ## 3. Use the existing tools
 
 - Prefer the current project's debug target and available interfaces: its IDE, CMSIS debugger, GDB/OpenOCD, or probe tools as configured. Do not require every backend or a particular supplier.
 - Check probe, device, power/connection, protocol, and current session ownership. Diagnose connection errors before acting. Do not globally kill similarly named processes, erase the chip, or lower protection settings by default.
 - Example scripts, ports, SVD paths, CPU frequencies, and commands are not project defaults. Do not invent tool results when no tool was found or run.
 - Start with the smallest observation that answers the hypothesis. Stop repeated connection attempts when the same error yields no new evidence; report the error, checks, and missing condition.
+
+For Keil/Arm toolchain discovery, compile/link diagnostics, STM32CubeProgrammer CLI commands, or connection/programming failures, read [Build, programming, and troubleshooting](build-and-programming.md). Separate tool startup, target connection, write, verification, reset, and application behavior before diagnosing the next layer.
 
 ## 4. Turn symptoms into testable hypotheses
 
@@ -58,6 +70,8 @@ For intermittent faults, preserve the last known inputs, readiness/validity stat
 - Verify register addresses, access widths, and read/write semantics against actual device documentation. SVD decoding does not guarantee harmless repeated reads.
 - Verify SWO frequency, pins, and availability on the actual hardware. An unavailable channel or silent output does not prove the code never ran.
 
+For repeated observations, intermittent-fault capture, or before/after comparisons, use [Structured sampling records](sampling-records.md). Keep session context, timestamps, raw and decoded values, CPU state, and read failures together. Use existing tools or exported observations; this format does not supply a collector or authorize new device operations. A single inspection can stay in the compact evidence table below.
+
 ## 6. Preserve exception evidence
 
 - For HardFault and related exceptions, capture available PC/LR/SP, core state, call stack, and fault registers supported by that core. Read CFSR/HFSR where supported; interpret fault addresses only when their validity bits are set.
@@ -77,7 +91,7 @@ For intermittent faults, preserve the last known inputs, readiness/validity stat
 | Symptom and conditions | Inputs, reproduction steps, expected versus observed behavior |
 | Version and target | Source revision/changes, configuration, image/running-version correspondence |
 | Tools and operations | Probe/backend, attach/reset/load behavior, halted versus continuous observation |
-| Hypothesis and observations | Actual breakpoint, variable, register, and stack results with capture timing |
+| Hypothesis and observations | Actual breakpoint, variable, register, and stack results with capture timing; sampling-record location/session when used |
 | Findings and limits | Proven, excluded, unresolved items; timing disturbance; issue status and workaround limits |
 | Change and retest | Actual diff, same-condition results, build and physical validation scope |
 
