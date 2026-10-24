@@ -15,6 +15,12 @@ Deliver changes that follow the current project's rules, can be verified with it
 4. Current explicit user instructions override older conventions. Follow more specific, still-applicable project rules over this skill's defaults and state material differences. Pause only the part affected by an unresolved conflict; continue independent authorized work.
 5. Surface mismatches between documentation, device identity, configuration, and the build target. Treat style preferences separately from hardware facts. Do not transfer pin, clock, register, library, or example parameters across STM32 families without checking the actual device documentation.
 
+## Mandatory wiring and damage-prevention rules
+
+- Whenever a task calls for a wiring inspection, or a wiring, measurement, power-up, or output-enable step could damage components, complete **two separate checks** before declaring the wiring verified or recommending/executing the affected operation. Use the design-compatibility and point-to-point checks in [Bring-up and integration](references/bringup-and-integration.md); record each pass's evidence and unresolved items. Repeating the same assertion does not count as a second check.
+- For a potentially damaging connection, **stop the affected step and ask the user** if the route, pin identity, polarity, voltage/current limits, grounding/isolation, or power path is uncertain or conflicting. Do not select a route or try powering it to find out. Explain the exact uncertainty, possible damage, and facts needed to resolve it. General permission to proceed does not resolve missing electrical facts; resume only after they are resolved and both checks are complete.
+- Recheck after relevant wiring, board, supply, load, probe, or output-configuration changes. Documentation or software inspection cannot establish the actual physical connection. Continue independent authorized analysis while the affected hardware step is stopped; do not claim physical verification without evidence.
+
 ## Read only the relevant references
 
 | Task | Required reference |
@@ -23,7 +29,7 @@ Deliver changes that follow the current project's rules, can be verified with it
 | Drivers, initialization, HAL, IRQ, DMA, or sampling interfaces | [Firmware development](references/firmware-development.md) |
 | Scheduling, control, recovery, resource budgets, or validation | [Reliability and validation](references/reliability.md) |
 | Hangs, faults, peripheral failures, incorrect values, or timing investigations | [Debugging with evidence](references/debugging.md) |
-| Initial power-up, module connections, system integration, or field tuning | [Bring-up and integration](references/bringup-and-integration.md) |
+| Wiring inspection, initial power-up, module connections, system integration, or field tuning | [Bring-up and integration](references/bringup-and-integration.md) |
 | Requested competition preparation, system acceptance, or reproducible delivery | [Competition validation and delivery](references/competition-validation.md) |
 
 For firmware edits, also select validation layers from the reliability reference. Offline fault analysis does not require every development reference. An ordinary module edit does not automatically become a competition or whole-system acceptance task.

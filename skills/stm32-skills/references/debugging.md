@@ -8,6 +8,7 @@ Use for fault analysis, runtime inspection, and authorized hardware debugging. W
 - Connecting, halting, stepping, resetting, flashing, and writing memory/registers are distinct operations. Stay within existing task authorization without requesting it again. Source inspection alone does not authorize resetting or reflashing.
 - Determine whether the first connection attaches or resets/loads. Preserve an existing fault state before restarting, reflashing, or starting another debug server.
 - Check how halting the CPU affects peripherals, communications, watchdogs, and external outputs. Do not assume every peripheral stops with the CPU; choose observations according to the current design.
+- Connecting a probe, USB/debugger, or external supply also falls under the [mandatory wiring checks](bringup-and-integration.md#mandatory-two-pass-wiring-check). Apply them before potentially damaging connections or output actions during debugging. If uncertain wiring conflicts with preserving a fault state, stop the affected operation and ask the user; preserving evidence does not authorize it.
 
 ## 2. Match source, image, and symbols
 

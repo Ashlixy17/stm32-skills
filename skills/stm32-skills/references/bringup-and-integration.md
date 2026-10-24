@@ -12,6 +12,24 @@ Use for initial power-up, connected modules, whole-system integration, or field 
 
 ## 2. Check connections and power
 
+### Mandatory two-pass wiring check
+
+Apply the entrypoint's mandatory rules to wiring inspections and any connection, measurement, power-up, or output-enable step that could damage components. These are two documented verification passes, not two generic requests for permission.
+
+| Pass | Verify and record |
+|---|---|
+| 1. Design compatibility | Exact board/device revision and connector view; source-to-load pin mapping; polarity, operating voltage/current limits, signal levels, input/output roles, power paths, and grounding/isolation against the actual device documentation and schematic |
+| 2. Point-to-point recheck | Trace each relevant connection again from the receiving end back to its source; compare with current physical evidence and any necessary measurements, checking connector orientation, pin numbering, supply settings, shorts/misconnections, and probe/reference connections |
+
+- State the result and evidence for each pass separately. If only documents are available, report the design review and mark physical verification pending; ask for the necessary connection details, photos, or measurements rather than claiming the hardware was checked.
+- If a potentially damaging connection remains uncertain or evidence conflicts, stop before giving an instruction to make/energize it or performing the affected operation, and ask the user to resolve the specific point. Wire colors, mating connectors, a similar board, and an earlier working setup cannot settle the current pinout. User approval alone does not establish electrical compatibility.
+- Before rewiring, require relevant supplies to be disconnected and stored energy to be discharged and verified according to the actual equipment/design procedure. Account for other power paths, including USB/debugger connections and signal backfeed; do not assume switching off one supply removes all energy. Live connection is permitted only when explicitly supported by the actual interface and authorized procedure.
+- Before power-up or output enable, verify the intended supply settings, applicable current limiting/protection, expected initial output state, and a way to stop the operation. Derive limits from the actual design; do not invent universal values or bypass protection to complete a test.
+- Relevant changes to wiring, board revision, supply, load, probe connections, or output configuration invalidate the affected checks; repeat both passes before the next affected operation. Keep the verified connection record aligned with the current hardware.
+- If unexpected current, heating, smoke, odor, rail collapse, or unintended output appears, stop the test and use the established shutdown procedure. Preserve the observation and inspect the cause before another authorized attempt; do not repeatedly power-cycle to see whether it clears.
+
+### Electrical and assembly checks
+
 - From device documentation, schematics, and actual wiring, verify supply range, polarity, interface levels, pin direction, and power/signal references. Mating connectors do not prove compatibility. Respect isolated-interface designs instead of requiring every module to share ground.
 - Match supply capability to startup/load demands. Derive current limits and staged power-up sequences from the design, not universal example values.
 - Verify reset, boot mode, debug access, and initial output state. Confirm the device is running the intended image/state before authorized output actions.

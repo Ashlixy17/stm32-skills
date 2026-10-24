@@ -20,6 +20,7 @@
 - **Firmware development**: Respect CubeMX USER CODE boundaries, keep initialization in one place, and check HAL status handling, IRQ callbacks, and DMA buffer handoff.
 - **Debugging with evidence**: Match source, ELF/AXF, running firmware, and SVD; investigate faults with breakpoints, watchpoints, registers, and call stacks.
 - **Bring-up and integration**: Check power, wiring, module interfaces, and complete data paths; record calibration and parameter changes.
+- **Mandatory wiring rules**: Complete two verification passes for wiring inspections and operations that could damage components. Stop the affected step and ask the user when a potentially damaging connection is uncertain. Recheck after changes to wiring, boards, or relevant power/output configuration.
 - **Competition validation**: Select acceptance criteria, repeated tests, recovery checks, and delivery procedures for the task.
 - **Layered validation**: Distinguish source inspection, host tests, target builds, and physical results, with evidence for each conclusion.
 
